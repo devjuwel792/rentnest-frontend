@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FormField } from "@/app/ui/FormField";
-import SubmitButton from "@/app/ui/SubmitButton";
+import { FormField } from "./FormField";
+import SubmitButton from "./SubmitButton";
 
 const API_BASE_URL = "http://localhost:3000";
 

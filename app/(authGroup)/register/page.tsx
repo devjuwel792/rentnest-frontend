@@ -1,5 +1,5 @@
 import Link from "next/link";
-import RegisterForm from "./RegisterForm";
+import RegisterForm from "../_components/RegisterForm";
 
 export const metadata = {
   title: "Create Account | RentNest",
@@ -23,7 +23,7 @@ export default function RegisterPage() {
       <p className="mt-6 text-center text-sm text-gray-500">
         Already have an account?{" "}
         <Link
-          href="/auth/login"
+          href="/login"
           className="font-semibold text-indigo-600 hover:text-indigo-500"
         >
           Sign in

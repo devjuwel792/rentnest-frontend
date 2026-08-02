@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type {
+  AdminUser,
   Category,
   CheckoutSession,
   Payment,
@@ -122,6 +123,25 @@ export function useGetLandlordRequestsQuery(): QueryResult<Rental[]> {
   });
 }
 
+export function useGetAdminUsersQuery(role?: string): QueryResult<AdminUser[]> {
+  const url = role
+    ? `/api/admin/users?role=${encodeURIComponent(role)}`
+    : "/api/admin/users";
+  return useQuery<AdminUser[]>(url, { token: getStoredToken() });
+}
+
+export function useGetAdminPropertiesQuery(): QueryResult<Property[]> {
+  return useQuery<Property[]>("/api/admin/properties", {
+    token: getStoredToken(),
+  });
+}
+
+export function useGetAdminRentalsQuery(): QueryResult<Rental[]> {
+  return useQuery<Rental[]>("/api/admin/rentals", {
+    token: getStoredToken(),
+  });
+}
+
 async function requestJson<T>(
   url: string,
   init?: RequestInit
@@ -178,6 +198,16 @@ export async function updateRentalRequestStatus(
   status: string
 ): Promise<Rental> {
   return requestJson<Rental>(`/api/landlord/requests/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });
+}
+
+export async function updateUserStatus(
+  id: string,
+  status: "ACTIVE" | "BANNED"
+): Promise<AdminUser> {
+  return requestJson<AdminUser>(`/api/admin/users/${id}`, {
     method: "PATCH",
     body: JSON.stringify({ status }),
   });

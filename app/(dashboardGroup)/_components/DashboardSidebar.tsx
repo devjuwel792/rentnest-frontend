@@ -17,7 +17,11 @@ const DashboardSidebar = ({ user }: { user: AuthUser }) => {
           🏠 RentNest
         </Link>
         <p className="mt-1 text-xs text-gray-500">
-          {user?.role === "LANDLORD" ? "Landlord dashboard" : "Tenant dashboard"}
+          {user?.role === "LANDLORD"
+            ? "Landlord dashboard"
+            : user?.role === "ADMIN"
+              ? "Admin dashboard"
+              : "Tenant dashboard"}
         </p>
       </div>
 

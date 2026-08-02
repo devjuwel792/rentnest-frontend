@@ -56,3 +56,46 @@ export interface QueryResult<T> {
   error: string | null;
   refetch: () => void;
 }
+
+export interface Rental {
+  id: string;
+  propertyId: string;
+  tenantId: string;
+  landlordId?: string;
+  status: string;
+  moveInDate: string;
+  monthlyRent?: number;
+  createdAt: string;
+  updatedAt?: string;
+  property?: Property;
+  landlord?: Landlord;
+}
+
+export interface Payment {
+  id: string;
+  rentalId: string;
+  amount: number;
+  status: string;
+  stripeSessionId?: string;
+  createdAt: string;
+  updatedAt?: string;
+  rental?: Rental;
+  property?: Property;
+}
+
+export interface CheckoutSession {
+  url: string;
+  sessionId?: string;
+}
+
+export interface ReviewInput {
+  propertyId: string;
+  rating: number;
+  comment: string;
+}
+
+export interface SidebarItem {
+  label: string;
+  href: string;
+  icon: string;
+}

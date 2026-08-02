@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FormField } from "./FormField";
 import SubmitButton from "./SubmitButton";
+import { setStoredAuth } from "@/lib/auth";
 
 const API_BASE_URL = "http://localhost:3000";
 
@@ -73,9 +74,8 @@ const RegisterForm = () => {
       const json = await res.json();
 
       if (json.success && json.data?.accessToken && json.data?.user) {
-        localStorage.setItem("rentnest_token", json.data.accessToken);
-        localStorage.setItem("rentnest_user", JSON.stringify(json.data.user));
-        router.push(DASHBOARD_PATHS[json.data.user.role]);
+        setStoredAuth(json.data.accessToken, json.data.user);
+        router.push(DASHBOARD_PATHS[json.data.user?.role]);
       } else {
         setMessage(json.message || "Registration failed. Please try again.");
       }

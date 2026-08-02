@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormField } from "./FormField";
 import SubmitButton from "./SubmitButton";
 import { setStoredAuth } from "@/lib/auth";
-
-const API_BASE_URL = "http://localhost:3000";
+import { register } from "@/lib/api";
 
 const inputClassName =
   "mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500";
@@ -66,21 +65,15 @@ const RegisterForm = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, phone, role }),
-      });
-      const json = await res.json();
-
-      if (json.success && json.data?.accessToken && json.data?.user) {
-        setStoredAuth(json.data.accessToken, json.data.user);
-        router.push(DASHBOARD_PATHS[json.data.user?.role]);
-      } else {
-        setMessage(json.message || "Registration failed. Please try again.");
-      }
-    } catch {
-      setMessage("Cannot reach the server. Please try again.");
+      const auth = await register({ name, email, password, phone, role });
+      setStoredAuth(auth.accessToken, auth.user);
+      router.push(DASHBOARD_PATHS[auth.user?.role]);
+    } catch (err) {
+      setMessage(
+        err instanceof Error
+          ? err.message
+          : "Cannot reach the server. Please try again."
+      );
     } finally {
       setLoading(false);
     }

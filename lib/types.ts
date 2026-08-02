@@ -1,3 +1,5 @@
+import type { AuthUser } from "./auth";
+
 export interface Category {
   id: string;
   name: string;
@@ -133,4 +135,27 @@ export interface AdminUser {
   createdAt?: string;
   propertiesCount?: number;
   rentalsCount?: number;
+}
+
+export interface LoginInput {
+  email: string;
+  password: string;
+}
+
+export interface RegisterInput {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  role: string;
+}
+
+export interface RentalInput {
+  propertyId: string;
+  moveInDate: string;
+}
+
+export interface AuthResponse {
+  accessToken: string;
+  user: AuthUser;
 }

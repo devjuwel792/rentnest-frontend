@@ -1,30 +1,51 @@
 import type {
+  AuthResponse,
+  Category,
   CheckoutSession,
+  LoginInput,
   Property,
   PropertyInput,
+  RegisterInput,
   Rental,
+  RentalInput,
   ReviewInput,
 } from "./types";
+import type { AuthUser } from "./auth";
 import { api, getErrorMessage, store } from "./redux";
 
 export { getErrorMessage };
 
 export type {
+  AuthResponse,
+  Category,
   CheckoutSession,
+  LoginInput,
   Property,
   PropertyInput,
+  RegisterInput,
   Rental,
+  RentalInput,
   ReviewInput,
   QueryResult,
 } from "./types";
+export type { AuthUser } from "./auth";
 
 export {
+  useLoginMutation,
+  useRegisterMutation,
+  useGetMeQuery,
   useGetPropertiesQuery,
   useGetCategoriesQuery,
+  useGetCategoryQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
   useGetPropertyQuery,
   useGetMyRentalsQuery,
   useGetRentalQuery,
+  useCreateRentalMutation,
   useGetMyPaymentsQuery,
+  useGetPaymentQuery,
   useGetMyPropertiesQuery,
   useGetLandlordRequestsQuery,
   useGetAdminUsersQuery,
@@ -40,6 +61,38 @@ export {
   useCreateReviewMutation,
   useConfirmPaymentMutation,
 } from "./redux";
+
+export async function login(input: LoginInput): Promise<AuthResponse> {
+  try {
+    const result = await store.dispatch(api.endpoints.login.initiate(input));
+    if (result.error) throw new Error(getErrorMessage(result.error));
+    return result.data as AuthResponse;
+  } catch (err) {
+    throw err instanceof Error
+      ? err
+      : new Error("Invalid email or password.");
+  }
+}
+
+export async function register(input: RegisterInput): Promise<AuthResponse> {
+  try {
+    const result = await store.dispatch(
+      api.endpoints.register.initiate(input)
+    );
+    if (result.error) throw new Error(getErrorMessage(result.error));
+    return result.data as AuthResponse;
+  } catch (err) {
+    throw err instanceof Error
+      ? err
+      : new Error("Registration failed. Please try again.");
+  }
+}
+
+export async function fetchMe(): Promise<AuthUser> {
+  const result = await store.dispatch(api.endpoints.getMe.initiate());
+  if (result.error) throw new Error(getErrorMessage(result.error));
+  return result.data as AuthUser;
+}
 
 export async function createProperty(
   input: PropertyInput
@@ -113,6 +166,42 @@ export async function createCheckoutSession(
 export async function createReview(input: ReviewInput): Promise<void> {
   const result = await store.dispatch(
     api.endpoints.createReview.initiate(input)
+  );
+  if (result.error) throw new Error(getErrorMessage(result.error));
+}
+
+export async function createRental(input: RentalInput): Promise<Rental> {
+  const result = await store.dispatch(
+    api.endpoints.createRental.initiate(input)
+  );
+  if (result.error) throw new Error(getErrorMessage(result.error));
+  return result.data as Rental;
+}
+
+export async function createCategory(
+  name: string
+): Promise<Category> {
+  const result = await store.dispatch(
+    api.endpoints.createCategory.initiate({ name })
+  );
+  if (result.error) throw new Error(getErrorMessage(result.error));
+  return result.data as Category;
+}
+
+export async function updateCategory(
+  id: string,
+  name: string
+): Promise<Category> {
+  const result = await store.dispatch(
+    api.endpoints.updateCategory.initiate({ id, name })
+  );
+  if (result.error) throw new Error(getErrorMessage(result.error));
+  return result.data as Category;
+}
+
+export async function deleteCategory(id: string): Promise<void> {
+  const result = await store.dispatch(
+    api.endpoints.deleteCategory.initiate(id)
   );
   if (result.error) throw new Error(getErrorMessage(result.error));
 }

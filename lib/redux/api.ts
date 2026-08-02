@@ -4,15 +4,20 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import type {
   AdminUser,
+  AuthResponse,
   Category,
   CheckoutSession,
+  LoginInput,
   Payment,
   Property,
   PropertyFilters,
   PropertyInput,
+  RegisterInput,
   Rental,
+  RentalInput,
   ReviewInput,
 } from "../types";
+import type { AuthUser } from "../auth";
 import { getStoredToken } from "../auth";
 
 export function getErrorMessage(error: unknown): string {
@@ -52,11 +57,62 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
+function extractData(response: unknown): Record<string, unknown> | undefined {
+  if (typeof response === "object" && response !== null) {
+    const data = (response as { data?: unknown }).data;
+    if (data && typeof data === "object") {
+      return data as Record<string, unknown>;
+    }
+  }
+  return undefined;
+}
+
 export const api = createApi({
   reducerPath: "api",
   baseQuery,
   tagTypes: ["Property", "Rental", "User", "Payment", "Category"],
   endpoints: (builder) => ({
+    login: builder.mutation<AuthResponse, LoginInput>({
+      query: (input) => ({ url: "/auth/login", method: "POST", body: input }),
+      transformResponse: (response: unknown) => {
+        const data = extractData(response);
+        if (
+          !data ||
+          typeof data.accessToken !== "string" ||
+          !data.user
+        ) {
+          throw new Error("Invalid email or password.");
+        }
+        return data as unknown as AuthResponse;
+      },
+    }),
+    register: builder.mutation<AuthResponse, RegisterInput>({
+      query: (input) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: input,
+      }),
+      transformResponse: (response: unknown) => {
+        const data = extractData(response);
+        if (
+          !data ||
+          typeof data.accessToken !== "string" ||
+          !data.user
+        ) {
+          throw new Error("Registration failed. Please try again.");
+        }
+        return data as unknown as AuthResponse;
+      },
+    }),
+    getMe: builder.query<AuthUser, void>({
+      query: () => ({ url: "/auth/me" }),
+      transformResponse: (response: unknown) => {
+        const data = extractData(response);
+        const user = (data?.user ?? data) as AuthUser | undefined;
+        if (!user) throw new Error("Could not load your profile.");
+        return user;
+      },
+    }),
     getProperties: builder.query<Property[], PropertyFilters | void>({
       query: (filters) => ({ url: "/properties", params: filters ?? {} }),
       providesTags: ["Property"],
@@ -64,6 +120,29 @@ export const api = createApi({
     getCategories: builder.query<Category[], void>({
       query: () => ({ url: "/categories" }),
       providesTags: ["Category"],
+    }),
+    getCategory: builder.query<Category, string>({
+      query: (id) => ({ url: `/categories/${id}` }),
+      providesTags: ["Category"],
+    }),
+    createCategory: builder.mutation<Category, { name: string }>({
+      query: (body) => ({ url: "/categories", method: "POST", body }),
+      invalidatesTags: ["Category"],
+    }),
+    updateCategory: builder.mutation<
+      Category,
+      { id: string; name: string }
+    >({
+      query: ({ id, name }) => ({
+        url: `/categories/${id}`,
+        method: "PUT",
+        body: { name },
+      }),
+      invalidatesTags: ["Category"],
+    }),
+    deleteCategory: builder.mutation<void, string>({
+      query: (id) => ({ url: `/categories/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Category"],
     }),
     getProperty: builder.query<Property, string>({
       query: (id) => ({ url: `/properties/${id}` }),
@@ -77,8 +156,16 @@ export const api = createApi({
       query: (id) => ({ url: `/rentals/${id}` }),
       providesTags: ["Rental"],
     }),
+    createRental: builder.mutation<Rental, RentalInput>({
+      query: (input) => ({ url: "/rentals", method: "POST", body: input }),
+      invalidatesTags: ["Rental"],
+    }),
     getMyPayments: builder.query<Payment[], void>({
       query: () => ({ url: "/payments" }),
+      providesTags: ["Payment"],
+    }),
+    getPayment: builder.query<Payment, string>({
+      query: (id) => ({ url: `/payments/${id}` }),
       providesTags: ["Payment"],
     }),
     getMyProperties: builder.query<Property[], void>({
@@ -202,12 +289,21 @@ export const api = createApi({
 });
 
 export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useGetMeQuery,
   useGetPropertiesQuery,
   useGetCategoriesQuery,
+  useGetCategoryQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
   useGetPropertyQuery,
   useGetMyRentalsQuery,
   useGetRentalQuery,
+  useCreateRentalMutation,
   useGetMyPaymentsQuery,
+  useGetPaymentQuery,
   useGetMyPropertiesQuery,
   useGetLandlordRequestsQuery,
   useGetAdminUsersQuery,

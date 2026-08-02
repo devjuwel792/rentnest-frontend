@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { Property } from "@/lib/types";
 import { formatRent } from "@/lib/format";
+import { createRental } from "@/lib/api";
 
 type RequestRentModalProps = {
   property: Property;
@@ -31,19 +32,7 @@ const RequestRentModal = ({
     setStatus("submitting");
     setMessage("");
     try {
-      const token = localStorage.getItem("rentnest_token");
-      const res = await fetch("/api/rentals", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ propertyId: property.id, moveInDate }),
-      });
-      const json = await res.json();
-      if (!res.ok || json.success === false) {
-        throw new Error(json.message || "Request failed. Please try again.");
-      }
+      await createRental({ propertyId: property.id, moveInDate });
       setStatus("success");
     } catch (err) {
       setStatus("error");

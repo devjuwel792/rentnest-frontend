@@ -16,7 +16,9 @@ const DashboardSidebar = ({ user }: { user: AuthUser }) => {
         <Link href="/" className="text-lg font-bold text-indigo-600">
           🏠 RentNest
         </Link>
-        <p className="mt-1 text-xs text-gray-500">Tenant dashboard</p>
+        <p className="mt-1 text-xs text-gray-500">
+          {user?.role === "LANDLORD" ? "Landlord dashboard" : "Tenant dashboard"}
+        </p>
       </div>
 
       <nav className="flex-1 space-y-1 px-3">

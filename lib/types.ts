@@ -57,6 +57,13 @@ export interface QueryResult<T> {
   refetch: () => void;
 }
 
+export interface RentalTenant {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+}
+
 export interface Rental {
   id: string;
   propertyId: string;
@@ -69,6 +76,22 @@ export interface Rental {
   updatedAt?: string;
   property?: Property;
   landlord?: Landlord;
+  tenant?: RentalTenant;
+  tenantName?: string;
+}
+
+export interface PropertyInput {
+  title: string;
+  description: string;
+  address: string;
+  location: string;
+  rent: number;
+  bedrooms: number;
+  bathrooms: number;
+  area?: number;
+  amenities?: string[];
+  images?: string[];
+  categoryId?: string;
 }
 
 export interface Payment {

@@ -5,6 +5,7 @@ import type {
   Payment,
   Property,
   PropertyFilters,
+  PropertyInput,
   QueryResult,
   Rental,
   ReviewInput,
@@ -107,6 +108,79 @@ export function useGetRentalQuery(id?: string): QueryResult<Rental> {
 
 export function useGetMyPaymentsQuery(): QueryResult<Payment[]> {
   return useQuery<Payment[]>("/api/payments", { token: getStoredToken() });
+}
+
+export function useGetMyPropertiesQuery(): QueryResult<Property[]> {
+  return useQuery<Property[]>("/api/properties/my-properties", {
+    token: getStoredToken(),
+  });
+}
+
+export function useGetLandlordRequestsQuery(): QueryResult<Rental[]> {
+  return useQuery<Rental[]>("/api/landlord/requests", {
+    token: getStoredToken(),
+  });
+}
+
+async function requestJson<T>(
+  url: string,
+  init?: RequestInit
+): Promise<T> {
+  const token = getStoredToken();
+  const res = await fetch(url, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(init?.headers ?? {}),
+    },
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok || json.success === false) {
+    throw new Error(json.message || `Request failed (${res.status})`);
+  }
+  return json.data as T;
+}
+
+export async function createProperty(
+  input: PropertyInput
+): Promise<Property> {
+  return requestJson<Property>("/api/properties", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export async function updateProperty(
+  id: string,
+  input: Partial<PropertyInput>
+): Promise<Property> {
+  return requestJson<Property>(`/api/properties/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(input),
+  });
+}
+
+export async function deleteProperty(id: string): Promise<void> {
+  await requestJson<unknown>(`/api/properties/${id}`, { method: "DELETE" });
+}
+
+export async function togglePropertyAvailability(
+  id: string
+): Promise<Property> {
+  return requestJson<Property>(`/api/properties/${id}/availability`, {
+    method: "PATCH",
+  });
+}
+
+export async function updateRentalRequestStatus(
+  id: string,
+  status: string
+): Promise<Rental> {
+  return requestJson<Rental>(`/api/landlord/requests/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });
 }
 
 export async function createCheckoutSession(

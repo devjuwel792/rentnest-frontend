@@ -71,7 +71,7 @@ const RequestCard = ({
             ⏳ Awaiting landlord approval
           </p>
         )}
-        {propertyId && (
+        {propertyId && rental.status === "COMPLETED" && (
           <button
             onClick={onLeaveReview}
             className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"

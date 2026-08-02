@@ -15,6 +15,7 @@ export interface Landlord {
 export interface Review {
   id: string;
   tenantName?: string;
+  tenant?: { id: string; name: string };
   rating: number;
   comment: string;
   createdAt?: string;
@@ -39,6 +40,7 @@ export interface Property {
   averageRating?: number;
   reviewCount?: number;
   reviews?: Review[];
+  _count?: { rentals?: number; reviews?: number };
 }
 
 export interface PropertyFilters {
@@ -102,7 +104,8 @@ export interface Payment {
   amount: number;
   status: string;
   stripeSessionId?: string;
-  createdAt: string;
+  createdAt?: string;
+  paidAt?: string;
   updatedAt?: string;
   rental?: Rental;
   property?: Property;

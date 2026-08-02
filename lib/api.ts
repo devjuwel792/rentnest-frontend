@@ -74,13 +74,13 @@ export async function login(input: LoginInput): Promise<AuthResponse> {
   }
 }
 
-export async function register(input: RegisterInput): Promise<AuthResponse> {
+export async function register(input: RegisterInput): Promise<AuthUser> {
   try {
     const result = await store.dispatch(
       api.endpoints.register.initiate(input)
     );
     if (result.error) throw new Error(getErrorMessage(result.error));
-    return result.data as AuthResponse;
+    return result.data as AuthUser;
   } catch (err) {
     throw err instanceof Error
       ? err

@@ -4,16 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FormField } from "./FormField";
 import SubmitButton from "./SubmitButton";
-import { setStoredAuth } from "@/lib/auth";
 import { register } from "@/lib/api";
 
 const inputClassName =
   "mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500";
-
-const DASHBOARD_PATHS: Record<string, string> = {
-  TENANT: "/dashboard/tenant",
-  LANDLORD: "/dashboard/landlord",
-};
 
 const ROLES = [
   {
@@ -65,9 +59,8 @@ const RegisterForm = () => {
 
     setLoading(true);
     try {
-      const auth = await register({ name, email, password, phone, role });
-      setStoredAuth(auth.accessToken, auth.user);
-      router.push(DASHBOARD_PATHS[auth.user?.role]);
+      await register({ name, email, password, phone, role });
+      router.push("/login?registered=1");
     } catch (err) {
       setMessage(
         err instanceof Error

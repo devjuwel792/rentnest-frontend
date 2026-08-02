@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async rewrites() {
     const apiBaseUrl =
-      process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
+      process.env.NEXT_PUBLIC_API_URL ?? "https://b7-a4-iota.vercel.app";
     return [
       {
         source: "/api/:path*",

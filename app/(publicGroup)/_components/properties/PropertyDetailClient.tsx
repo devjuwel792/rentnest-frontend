@@ -54,6 +54,16 @@ const PropertyDetailClient = ({ id }: { id: string }) => {
   const images = property.images?.length ? property.images : [];
   const selectedImageSrc = images[selectedImage] ?? null;
 
+  const reviews = property.reviews ?? [];
+  const reviewCount =
+    property._count?.reviews ?? property.reviewCount ?? reviews.length;
+  const averageRating =
+    property.averageRating ??
+    (reviews.length > 0
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) /
+        reviews.length
+      : undefined);
+
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
       <Link
@@ -130,21 +140,20 @@ const PropertyDetailClient = ({ id }: { id: string }) => {
 
           <section className="mt-8">
             <h2 className="text-lg font-semibold text-gray-900">
-              Reviews{" "}
-              {property.reviewCount ? `(${property.reviewCount})` : ""}
+              Reviews {reviewCount ? `(${reviewCount})` : ""}
             </h2>
 
-            {property.averageRating ? (
+            {averageRating ? (
               <div className="mt-3 flex items-center gap-2">
                 <span className="text-2xl font-bold text-gray-900">
-                  {property.averageRating.toFixed(1)}
+                  {averageRating.toFixed(1)}
                 </span>
                 <span className="text-lg text-amber-500">
-                  {"★".repeat(Math.round(property.averageRating))}
-                  {"☆".repeat(5 - Math.round(property.averageRating))}
+                  {"★".repeat(Math.round(averageRating))}
+                  {"☆".repeat(5 - Math.round(averageRating))}
                 </span>
                 <span className="text-sm text-gray-500">
-                  from {property.reviewCount ?? 0} review(s)
+                  from {reviewCount ?? 0} review(s)
                 </span>
               </div>
             ) : null}
@@ -158,7 +167,7 @@ const PropertyDetailClient = ({ id }: { id: string }) => {
                   >
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-semibold text-gray-900">
-                        {review.tenantName || "Tenant"}
+                        {review.tenant?.name ?? review.tenantName ?? "Tenant"}
                       </p>
                       <span className="text-sm text-amber-500">
                         {"★".repeat(review.rating)}

@@ -175,7 +175,9 @@ const TenantDashboard = () => {
                         `Rental ${payment.rentalId}`}
                     </p>
                     <p className="mt-0.5 text-xs text-gray-500">
-                      {payment.createdAt ? formatDate(payment.createdAt) : "—"}
+                      {payment.paidAt ?? payment.createdAt
+                        ? formatDate(payment.paidAt ?? payment.createdAt)
+                        : "—"}
                       {" · "}
                       Ref: {payment.id.slice(0, 8)}
                     </p>

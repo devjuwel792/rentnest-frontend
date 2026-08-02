@@ -68,8 +68,9 @@ const AdminRentalList = () => {
           <option value="">All statuses</option>
           <option value="PENDING">Pending</option>
           <option value="APPROVED">Approved</option>
+          <option value="ACTIVE">Active</option>
+          <option value="COMPLETED">Completed</option>
           <option value="REJECTED">Rejected</option>
-          <option value="CANCELLED">Cancelled</option>
         </select>
         <span className="text-sm text-gray-500">
           {filtered.length} request{filtered.length === 1 ? "" : "s"}

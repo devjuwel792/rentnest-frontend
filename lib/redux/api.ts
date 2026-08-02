@@ -1,6 +1,9 @@
 import {
   createApi,
   fetchBaseQuery,
+  type BaseQueryFn,
+  type FetchArgs,
+  type FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 import type {
   AdminUser,
@@ -46,7 +49,7 @@ export function getErrorMessage(error: unknown): string {
   return "Something went wrong.";
 }
 
-const baseQuery = fetchBaseQuery({
+const rawBaseQuery = fetchBaseQuery({
   baseUrl: "/api",
   prepareHeaders: (headers) => {
     const token = getStoredToken();
@@ -57,15 +60,16 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-function extractData(response: unknown): Record<string, unknown> | undefined {
-  if (typeof response === "object" && response !== null) {
-    const data = (response as { data?: unknown }).data;
-    if (data && typeof data === "object") {
-      return data as Record<string, unknown>;
-    }
-  }
-  return undefined;
-}
+const baseQuery: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  const result = await rawBaseQuery(args, api, extraOptions);
+  if (result.error) return result;
+  const body = result.data as { data?: unknown } | undefined;
+  return { data: body?.data };
+};
 
 export const api = createApi({
   reducerPath: "api",
@@ -75,9 +79,8 @@ export const api = createApi({
     login: builder.mutation<AuthResponse, LoginInput>({
       query: (input) => ({ url: "/auth/login", method: "POST", body: input }),
       transformResponse: (response: unknown) => {
-        const data = extractData(response);
+        const data = (response ?? {}) as Record<string, unknown>;
         if (
-          !data ||
           typeof data.accessToken !== "string" ||
           !data.user
         ) {
@@ -86,29 +89,18 @@ export const api = createApi({
         return data as unknown as AuthResponse;
       },
     }),
-    register: builder.mutation<AuthResponse, RegisterInput>({
+    register: builder.mutation<AuthUser, RegisterInput>({
       query: (input) => ({
         url: "/auth/register",
         method: "POST",
         body: input,
       }),
-      transformResponse: (response: unknown) => {
-        const data = extractData(response);
-        if (
-          !data ||
-          typeof data.accessToken !== "string" ||
-          !data.user
-        ) {
-          throw new Error("Registration failed. Please try again.");
-        }
-        return data as unknown as AuthResponse;
-      },
+      transformResponse: (response: unknown) => response as AuthUser,
     }),
     getMe: builder.query<AuthUser, void>({
       query: () => ({ url: "/auth/me" }),
       transformResponse: (response: unknown) => {
-        const data = extractData(response);
-        const user = (data?.user ?? data) as AuthUser | undefined;
+        const user = response as AuthUser | undefined;
         if (!user) throw new Error("Could not load your profile.");
         return user;
       },
@@ -250,10 +242,7 @@ export const api = createApi({
         body: { rentalId },
       }),
       transformResponse: (response: unknown) => {
-        const data =
-          typeof response === "object" && response !== null
-            ? (response as { data?: Record<string, unknown> }).data ?? {}
-            : {};
+        const data = (response ?? {}) as Record<string, unknown>;
         const url =
           data.url ??
           data.checkoutUrl ??

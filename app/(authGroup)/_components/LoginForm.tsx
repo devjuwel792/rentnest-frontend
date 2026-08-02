@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormField } from "./FormField";
 import SubmitButton from "./SubmitButton";
 import { setStoredAuth } from "@/lib/auth";
@@ -18,6 +18,7 @@ const DASHBOARD_PATHS: Record<string, string> = {
 
 const LoginForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState<{
@@ -26,6 +27,8 @@ const LoginForm = () => {
   }>({});
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const registered = searchParams.get("registered") === "1";
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -80,6 +83,15 @@ const LoginForm = () => {
           className={inputClassName}
         />
       </FormField>
+
+      {registered && (
+        <p
+          role="status"
+          className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700"
+        >
+          ✓ Account created! Sign in to continue.
+        </p>
+      )}
 
       {message && (
         <p

@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useGetLandlordRequestsQuery, updateRentalRequestStatus } from "@/lib/api";
+import {
+  getErrorMessage,
+  updateRentalRequestStatus,
+  useGetLandlordRequestsQuery,
+} from "@/lib/api";
 import { formatDate, formatRent } from "@/lib/format";
 import { RentalStatusBadge } from "../tenant/StatusBadge";
 
@@ -65,7 +69,7 @@ const LandlordRequestList = () => {
             Couldn&apos;t load requests
           </p>
           <p className="mt-1 text-sm text-gray-500">
-            {error || "Please try again."}
+            {getErrorMessage(error) || "Please try again."}
           </p>
           <button
             onClick={refetch}

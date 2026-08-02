@@ -4,10 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { useAuthUser } from "@/lib/auth";
 import {
+  deleteProperty,
+  getErrorMessage,
+  togglePropertyAvailability,
   useGetLandlordRequestsQuery,
   useGetMyPropertiesQuery,
-  deleteProperty,
-  togglePropertyAvailability,
 } from "@/lib/api";
 import { formatRent } from "@/lib/format";
 import PropertyCard from "./PropertyCard";
@@ -144,7 +145,7 @@ const LandlordDashboard = () => {
               Couldn&apos;t load your properties
             </p>
             <p className="mt-1 text-sm text-gray-500">
-              {error || "Please try again."}
+              {getErrorMessage(error) || "Please try again."}
             </p>
             <button
               onClick={refetch}

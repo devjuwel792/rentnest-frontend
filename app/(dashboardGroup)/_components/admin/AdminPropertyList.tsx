@@ -1,7 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { togglePropertyAvailability, useGetAdminPropertiesQuery } from "@/lib/api";
+import {
+  getErrorMessage,
+  togglePropertyAvailability,
+  useGetAdminPropertiesQuery,
+} from "@/lib/api";
 import { formatRent } from "@/lib/format";
 import Pagination from "./Pagination";
 
@@ -120,7 +124,7 @@ const AdminPropertyList = () => {
             Couldn&apos;t load properties
           </p>
           <p className="mt-1 text-sm text-gray-500">
-            {error || "Please try again."}
+            {getErrorMessage(error) || "Please try again."}
           </p>
           <button
             onClick={refetch}

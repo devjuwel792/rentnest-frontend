@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useGetAdminRentalsQuery } from "@/lib/api";
+import { getErrorMessage, useGetAdminRentalsQuery } from "@/lib/api";
 import { formatDate, formatRent } from "@/lib/format";
 import { RentalStatusBadge } from "../tenant/StatusBadge";
 import Pagination from "./Pagination";
@@ -92,7 +92,7 @@ const AdminRentalList = () => {
             Couldn&apos;t load rentals
           </p>
           <p className="mt-1 text-sm text-gray-500">
-            {error || "Please try again."}
+            {getErrorMessage(error) || "Please try again."}
           </p>
           <button
             onClick={refetch}

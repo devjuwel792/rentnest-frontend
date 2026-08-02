@@ -2,7 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useGetCategoriesQuery, useGetPropertiesQuery } from "@/lib/api";
+import {
+  getErrorMessage,
+  useGetCategoriesQuery,
+  useGetPropertiesQuery,
+} from "@/lib/api";
 import type { PropertyFilters } from "@/lib/types";
 import { PropertyCard } from "./PropertyCard";
 import { PropertyGridSkeleton } from "./Skeletons";
@@ -233,7 +237,8 @@ const PropertiesClient = () => {
               Couldn&apos;t load properties
             </h3>
             <p className="mt-1 text-sm text-gray-500">
-              {error || "Please check your connection and try again."}
+              {getErrorMessage(error) ||
+                "Please check your connection and try again."}
             </p>
             <button
               onClick={refetch}

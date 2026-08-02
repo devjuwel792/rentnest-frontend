@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useGetPropertyQuery } from "@/lib/api";
+import { getErrorMessage, useGetPropertyQuery } from "@/lib/api";
 import { formatRent, formatDate } from "@/lib/format";
 import { PropertyDetailSkeleton } from "./Skeletons";
 import RequestRentModal from "./RequestRentModal";
@@ -30,7 +30,8 @@ const PropertyDetailClient = ({ id }: { id: string }) => {
           Property not found
         </h1>
         <p className="mt-2 text-gray-500">
-          {error || "This listing may have been removed or never existed."}
+          {getErrorMessage(error) ||
+            "This listing may have been removed or never existed."}
         </p>
         <div className="mt-6 flex items-center justify-center gap-3">
           <button

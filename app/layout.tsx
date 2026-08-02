@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import ReduxProvider from "@/lib/redux/ReduxProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -18,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="flex min-h-full flex-col">
-        {children}
+        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );

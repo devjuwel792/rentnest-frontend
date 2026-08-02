@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetPropertiesQuery } from "@/lib/api";
+import { getErrorMessage, useGetPropertiesQuery } from "@/lib/api";
 import { PropertyCard } from "../properties/PropertyCard";
 import { PropertyGridSkeleton } from "../properties/Skeletons";
 
@@ -20,7 +20,8 @@ const FeaturedProperties = () => {
           Couldn&apos;t load featured properties
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          {error || "Please check your connection and try again."}
+          {getErrorMessage(error) ||
+            "Please check your connection and try again."}
         </p>
         <button
           onClick={refetch}

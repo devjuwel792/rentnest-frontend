@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useGetRentalQuery, createCheckoutSession } from "@/lib/api";
+import {
+  createCheckoutSession,
+  getErrorMessage,
+  useGetRentalQuery,
+} from "@/lib/api";
 import { formatDate, formatRent } from "@/lib/format";
 import { RentalStatusBadge } from "./StatusBadge";
 
@@ -44,7 +48,7 @@ const CheckoutPage = ({ rentalId }: { rentalId: string }) => {
           Request not found
         </h1>
         <p className="mt-2 text-sm text-gray-500">
-          {error || "This request may have been removed."}
+          {getErrorMessage(error) || "This request may have been removed."}
         </p>
         <div className="mt-6 flex items-center gap-3">
           <button

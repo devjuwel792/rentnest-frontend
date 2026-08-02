@@ -3,7 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useAuthUser } from "@/lib/auth";
-import { useGetMyPaymentsQuery, useGetMyRentalsQuery } from "@/lib/api";
+import {
+  getErrorMessage,
+  useGetMyPaymentsQuery,
+  useGetMyRentalsQuery,
+} from "@/lib/api";
 import { formatDate, formatRent } from "@/lib/format";
 import type { Rental } from "@/lib/types";
 import RequestCard from "./RequestCard";
@@ -103,7 +107,7 @@ const TenantDashboard = () => {
               Couldn&apos;t load your requests
             </p>
             <p className="mt-1 text-sm text-gray-500">
-              {error || "Please try again."}
+              {getErrorMessage(error) || "Please try again."}
             </p>
             <button
               onClick={refetch}

@@ -2,7 +2,11 @@
 
 import { useMemo, useState } from "react";
 import type { AdminUser } from "@/lib/types";
-import { updateUserStatus, useGetAdminUsersQuery } from "@/lib/api";
+import {
+  getErrorMessage,
+  updateUserStatus,
+  useGetAdminUsersQuery,
+} from "@/lib/api";
 import { formatDate } from "@/lib/format";
 import Pagination from "./Pagination";
 
@@ -156,7 +160,7 @@ const AdminUserList = () => {
             Couldn&apos;t load users
           </p>
           <p className="mt-1 text-sm text-gray-500">
-            {error || "Please try again."}
+            {getErrorMessage(error) || "Please try again."}
           </p>
           <button
             onClick={refetch}

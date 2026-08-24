@@ -1,12 +1,13 @@
 import Link from "next/link";
 import HeroSearch from "./_components/home/HeroSearch";
+import HeroActions from "./_components/home/HeroActions";
 import FeaturedProperties from "./_components/home/FeaturedProperties";
 
 export default function Home() {
   return (
     <main className="flex-1">
-      <section className="bg-gradient-to-b from-indigo-50 to-white px-4 pb-16 pt-20 text-center">
-        <p className="text-sm font-semibold text-indigo-600">RentNest</p>
+      <section className="bg-gradient-to-b from-indigo-50 to-white px-4 pb-16 pt-16 text-center">
+        <p className="text-sm font-semibold text-indigo-600">RentNest Platform</p>
         <h1 className="mx-auto mt-2 max-w-2xl text-4xl font-bold text-gray-900 sm:text-5xl">
           Find &amp; list rental properties with ease
         </h1>
@@ -14,6 +15,8 @@ export default function Home() {
           Browse trusted rental listings, submit requests, and manage your
           properties — all in one place.
         </p>
+
+        <HeroActions />
 
         <HeroSearch />
 

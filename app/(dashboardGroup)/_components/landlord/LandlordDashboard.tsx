@@ -23,14 +23,14 @@ const StatCard = ({
   icon: string;
 }) => {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-      <div className="flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-xl">
+    <div className="rounded-3xl border border-gray-200/80 bg-white p-6 shadow-xl transition-all hover:-translate-y-0.5">
+      <div className="flex items-center gap-4">
+        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-2xl shadow-sm">
           {icon}
         </span>
         <div>
-          <p className="text-xs text-gray-500">{label}</p>
-          <p className="text-xl font-bold text-gray-900">{value}</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-gray-400">{label}</p>
+          <p className="text-2xl font-black text-gray-900">{value}</p>
         </div>
       </div>
     </div>
@@ -99,9 +99,9 @@ const LandlordDashboard = () => {
         </div>
         <Link
           href="/dashboard/landlord/properties/new"
-          className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
+          className="rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-indigo-500/25 transition-all hover:opacity-95"
         >
-          ➕ Add property
+          ➕ Add New Property
         </Link>
       </div>
 

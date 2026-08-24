@@ -49,8 +49,11 @@ export function getErrorMessage(error: unknown): string {
   return "Something went wrong.";
 }
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+const baseUrl = apiBaseUrl ? `${apiBaseUrl.replace(/\/$/, "")}/api` : "/api";
+
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl: "/api",
+  baseUrl,
   prepareHeaders: (headers) => {
     const token = getStoredToken();
     if (token) {

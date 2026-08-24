@@ -2,19 +2,42 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { clearStoredAuth, useAuthUser } from "@/lib/auth";
 import DashboardSidebar from "./DashboardSidebar";
 
 const DashboardShell = ({ children }: { children: React.ReactNode }) => {
   const user = useAuthUser();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (user === null) {
       router.replace("/login");
+      return;
     }
-  }, [user, router]);
+    if (user) {
+      if (pathname.startsWith("/dashboard/admin") && user.role !== "ADMIN") {
+        router.replace(
+          user.role === "LANDLORD" ? "/dashboard/landlord" : "/dashboard/tenant"
+        );
+      } else if (
+        pathname.startsWith("/dashboard/landlord") &&
+        user.role !== "LANDLORD"
+      ) {
+        router.replace(
+          user.role === "ADMIN" ? "/dashboard/admin" : "/dashboard/tenant"
+        );
+      } else if (
+        pathname.startsWith("/dashboard/tenant") &&
+        user.role !== "TENANT"
+      ) {
+        router.replace(
+          user.role === "ADMIN" ? "/dashboard/admin" : "/dashboard/landlord"
+        );
+      }
+    }
+  }, [user, pathname, router]);
 
   if (!user) {
     return (

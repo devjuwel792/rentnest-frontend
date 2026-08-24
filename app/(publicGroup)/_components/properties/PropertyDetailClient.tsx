@@ -7,12 +7,14 @@ import { getErrorMessage, useGetPropertyQuery } from "@/lib/api";
 import { formatRent, formatDate } from "@/lib/format";
 import { PropertyDetailSkeleton } from "./Skeletons";
 import RequestRentModal from "./RequestRentModal";
+import WriteReviewModal from "./WriteReviewModal";
 
 const PropertyDetailClient = ({ id }: { id: string }) => {
   const { data: property, isLoading, isError, error, refetch } =
     useGetPropertyQuery(id);
   const [selectedImage, setSelectedImage] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [writeReviewOpen, setWriteReviewOpen] = useState(false);
   const [authed, setAuthed] = useState(false);
 
   const openRequestModal = () => {
@@ -139,9 +141,19 @@ const PropertyDetailClient = ({ id }: { id: string }) => {
           )}
 
           <section className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Reviews {reviewCount ? `(${reviewCount})` : ""}
-            </h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Reviews {reviewCount ? `(${reviewCount})` : ""}
+              </h2>
+              {authed && (
+                <button
+                  onClick={() => setWriteReviewOpen(true)}
+                  className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition-colors hover:bg-indigo-100"
+                >
+                  ⭐ Write a Review
+                </button>
+              )}
+            </div>
 
             {averageRating ? (
               <div className="mt-3 flex items-center gap-2">
@@ -271,6 +283,15 @@ const PropertyDetailClient = ({ id }: { id: string }) => {
           property={property}
           authed={authed}
           onClose={() => setModalOpen(false)}
+        />
+      )}
+
+      {writeReviewOpen && (
+        <WriteReviewModal
+          propertyId={property.id}
+          propertyTitle={property.title}
+          onClose={() => setWriteReviewOpen(false)}
+          onSuccess={() => refetch()}
         />
       )}
     </main>

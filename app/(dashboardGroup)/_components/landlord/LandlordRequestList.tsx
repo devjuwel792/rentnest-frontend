@@ -171,13 +171,28 @@ const LandlordRequestList = () => {
                       </span>
                     )}
                   </div>
+                ) : rental.status === "ACTIVE" ? (
+                  <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
+                    <p className="text-sm font-medium text-emerald-600">
+                      ⚡ Active Tenancy (Paid)
+                    </p>
+                    <button
+                      onClick={() => handleDecision(rental.id, "COMPLETED")}
+                      disabled={busy}
+                      className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-indigo-500 disabled:opacity-50"
+                    >
+                      Mark Tenancy Completed
+                    </button>
+                  </div>
                 ) : (
                   <p className="mt-4 border-t border-gray-100 pt-3 text-sm text-gray-500">
                     {rental.status === "APPROVED"
-                      ? "✅ Approved — the tenant can now pay."
+                      ? "✅ Approved — awaiting tenant payment."
                       : rental.status === "REJECTED"
-                        ? "Rejected — the tenant has been notified."
-                        : `Status: ${rental.status}`}
+                        ? "Rejected — tenant has been notified."
+                        : rental.status === "COMPLETED"
+                          ? "🎉 Rental completed."
+                          : `Status: ${rental.status}`}
                   </p>
                 )}
               </div>

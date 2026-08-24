@@ -10,14 +10,14 @@ export function FormField({ label, htmlFor, error, children }: FormFieldProps) {
     <div>
       <label
         htmlFor={htmlFor}
-        className="block text-sm font-medium text-gray-700"
+        className="block text-sm font-semibold text-gray-200"
       >
         {label}
       </label>
       {children}
       {error && (
-        <p className="mt-1 text-sm text-red-600" id={`${htmlFor}-error`}>
-          {error}
+        <p className="mt-1.5 text-xs font-semibold text-rose-400" id={`${htmlFor}-error`}>
+          ⚠️ {error}
         </p>
       )}
     </div>

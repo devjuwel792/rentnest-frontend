@@ -11,21 +11,25 @@ const DashboardSidebar = ({ user }: { user: AuthUser }) => {
   const items: SidebarItem[] = sidebarMenuItems[user?.role] ?? [];
 
   return (
-    <aside className="flex w-60 shrink-0 flex-col border-r border-gray-200 bg-white">
-      <div className="px-5 py-5">
-        <Link href="/" className="text-lg font-bold text-indigo-600">
-          🏠 RentNest
+    <aside className="flex w-64 shrink-0 flex-col border-r border-slate-800 bg-slate-950 text-white">
+      <div className="border-b border-slate-800/80 px-6 py-6">
+        <Link href="/" className="group flex items-center gap-2.5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-base shadow-lg shadow-indigo-500/30">
+            🏠
+          </span>
+          <span className="text-xl font-black tracking-tight">
+            Rent
+            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+              Nest
+            </span>
+          </span>
         </Link>
-        <p className="mt-1 text-xs text-gray-500">
-          {user?.role === "LANDLORD"
-            ? "Landlord dashboard"
-            : user?.role === "ADMIN"
-              ? "Admin dashboard"
-              : "Tenant dashboard"}
-        </p>
+        <span className="mt-2.5 inline-block rounded-full border border-indigo-500/30 bg-indigo-500/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-300">
+          {user?.role} Portal
+        </span>
       </div>
 
-      <nav className="flex-1 space-y-1 px-3">
+      <nav className="flex-1 space-y-1.5 p-4">
         {items.map((item) => {
           const active =
             pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -34,13 +38,13 @@ const DashboardSidebar = ({ user }: { user: AuthUser }) => {
               key={item.href}
               href={item.href}
               aria-current={active ? "page" : undefined}
-              className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                 active
-                  ? "bg-indigo-50 text-indigo-700"
-                  : "text-gray-700 hover:bg-gray-100"
+                  ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/25"
+                  : "text-gray-400 hover:bg-slate-900 hover:text-white"
               }`}
             >
-              <span className="text-base">{item.icon}</span>
+              <span className="text-lg">{item.icon}</span>
               {item.label}
             </Link>
           );

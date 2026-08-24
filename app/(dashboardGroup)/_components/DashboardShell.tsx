@@ -41,10 +41,10 @@ const DashboardShell = ({ children }: { children: React.ReactNode }) => {
 
   if (!user) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="flex items-center gap-3 text-gray-500">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-200 border-t-indigo-600" />
-          <span className="text-sm">Checking your session...</span>
+      <main className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+        <div className="flex items-center gap-3 text-gray-300">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-indigo-500/20 border-t-indigo-500" />
+          <span className="text-sm font-semibold">Verifying session...</span>
         </div>
       </main>
     );
@@ -56,34 +56,34 @@ const DashboardShell = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-slate-50">
       <DashboardSidebar user={user} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-10 border-b border-gray-200 bg-white px-6 py-3">
+        <header className="sticky top-0 z-10 border-b border-gray-200/80 bg-white/90 px-6 py-4 backdrop-blur-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-gray-500">Signed in as</p>
-              <p className="text-sm font-semibold text-gray-900">
-                {user?.name} · {user?.role.toLowerCase()}
+              <p className="text-xs font-semibold text-gray-400">Welcome back,</p>
+              <p className="flex items-center gap-2 text-base font-bold text-gray-900">
+                <span>👋</span> {user?.name}
               </p>
             </div>
             <div className="flex items-center gap-3">
               <Link
                 href="/"
-                className="text-sm font-medium text-gray-500 hover:text-gray-800"
+                className="rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-1.5 text-xs font-bold text-gray-700 transition-colors hover:bg-gray-100"
               >
-                View site
+                🌐 View Site
               </Link>
               <button
                 onClick={handleLogout}
-                className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                className="rounded-xl border border-gray-200 bg-white px-3.5 py-1.5 text-xs font-bold text-rose-600 transition-colors hover:bg-rose-50"
               >
                 Log out
               </button>
             </div>
           </div>
         </header>
-        <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">
+        <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-8">
           {children}
         </main>
       </div>

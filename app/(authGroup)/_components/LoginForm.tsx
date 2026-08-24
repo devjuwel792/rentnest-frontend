@@ -8,7 +8,7 @@ import { setStoredAuth } from "@/lib/auth";
 import { login } from "@/lib/api";
 
 const inputClassName =
-  "mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500";
+  "mt-1.5 block w-full rounded-xl border border-white/20 bg-slate-950/60 px-3.5 py-2.5 text-sm text-white shadow-md placeholder:text-gray-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/40 transition-all";
 
 const DASHBOARD_PATHS: Record<string, string> = {
   TENANT: "/dashboard/tenant",

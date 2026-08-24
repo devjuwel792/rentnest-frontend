@@ -17,7 +17,7 @@ const SubmitButton = ({
     <button
       type="submit"
       disabled={loading}
-      className={`inline-flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${className}`}
+      className={`inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 px-4 py-3 text-sm font-bold text-white shadow-xl shadow-indigo-500/25 transition-all hover:opacity-95 hover:shadow-indigo-500/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 ${className}`}
     >
       {loading && (
         <svg

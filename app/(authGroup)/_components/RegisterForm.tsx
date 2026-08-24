@@ -7,18 +7,18 @@ import SubmitButton from "./SubmitButton";
 import { register } from "@/lib/api";
 
 const inputClassName =
-  "mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500";
+  "mt-1.5 block w-full rounded-xl border border-white/20 bg-slate-950/60 px-3.5 py-2.5 text-sm text-white shadow-md placeholder:text-gray-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/40 transition-all";
 
 const ROLES = [
   {
     value: "TENANT",
     title: "Tenant",
-    description: "I&apos;m looking for a rental home",
+    description: "Looking for a rental home",
   },
   {
     value: "LANDLORD",
     title: "Landlord",
-    description: "I want to list properties",
+    description: "Want to list properties",
   },
 ];
 
@@ -75,7 +75,7 @@ const RegisterForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <FormField label="I am joining as" htmlFor="role" error={fieldErrors.role}>
-        <div className="mt-1 grid grid-cols-2 gap-3">
+        <div className="mt-1.5 grid grid-cols-2 gap-3">
           {ROLES.map((option) => {
             const selected = role === option.value;
             return (
@@ -84,20 +84,20 @@ const RegisterForm = () => {
                 type="button"
                 aria-pressed={selected}
                 onClick={() => setRole(option.value)}
-                className={`rounded-lg border px-3 py-3 text-left transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                className={`rounded-2xl border p-3 text-left transition-all focus:outline-none ${
                   selected
-                    ? "border-indigo-600 bg-indigo-50 ring-1 ring-indigo-600"
-                    : "border-gray-300 bg-white hover:border-gray-400"
+                    ? "border-indigo-500 bg-indigo-500/20 ring-2 ring-indigo-500/50"
+                    : "border-white/15 bg-white/5 hover:border-white/30 hover:bg-white/10"
                 }`}
               >
                 <span
-                  className={`block text-sm font-semibold ${
-                    selected ? "text-indigo-700" : "text-gray-900"
+                  className={`block text-sm font-bold ${
+                    selected ? "text-indigo-300" : "text-white"
                   }`}
                 >
                   {option.title}
                 </span>
-                <span className="mt-0.5 block text-xs text-gray-500">
+                <span className="mt-0.5 block text-xs text-gray-400">
                   {option.description}
                 </span>
               </button>

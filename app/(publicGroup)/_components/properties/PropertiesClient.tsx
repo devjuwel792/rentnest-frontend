@@ -82,15 +82,17 @@ const PropertiesClient = () => {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
-      <aside className="h-fit rounded-2xl border border-gray-200 bg-white p-5 shadow-sm lg:sticky lg:top-4">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-gray-900">Filters</h2>
+      <aside className="h-fit rounded-3xl border border-gray-200/80 bg-white p-6 shadow-xl lg:sticky lg:top-20">
+        <div className="mb-5 flex items-center justify-between border-b border-gray-100 pb-3">
+          <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
+            <span>⚙️</span> Filter Catalog
+          </h2>
           {hasActiveFilters && (
             <button
               onClick={clearAll}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-500"
+              className="text-xs font-bold text-indigo-600 transition-colors hover:text-indigo-500"
             >
-              Clear all
+              Reset all
             </button>
           )}
         </div>

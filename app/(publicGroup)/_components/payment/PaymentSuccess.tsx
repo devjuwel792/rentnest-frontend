@@ -41,63 +41,71 @@ const PaymentSuccess = () => {
   }, [sessionId]);
 
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-gray-200 bg-white px-6 py-14 text-center shadow-sm">
+    <div className="flex flex-col items-center rounded-3xl border border-gray-200/80 bg-white p-8 text-center shadow-xl sm:p-12">
       {status === "checking" ? (
         <>
-          <div className="h-10 w-10 animate-spin rounded-full border-2 border-gray-200 border-t-indigo-600" />
-          <p className="mt-4 text-lg font-semibold text-gray-900">
-            Confirming your payment...
-          </p>
-          <p className="mt-1 text-sm text-gray-500">
-            Please wait a moment.
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-200 border-t-indigo-600" />
+          </div>
+          <h2 className="mt-6 text-2xl font-bold text-gray-900">
+            Confirming Payment Status...
+          </h2>
+          <p className="mt-2 text-sm text-gray-500">
+            Please wait while we verify your Stripe checkout session.
           </p>
         </>
       ) : status === "success" ? (
         <>
-          <p className="text-6xl">🎉</p>
-          <h1 className="mt-4 text-3xl font-bold text-gray-900">
-            Payment successful!
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-50 text-4xl shadow-inner">
+            🎉
+          </div>
+          <span className="mt-6 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1 text-xs font-bold text-emerald-700">
+            ✓ Transaction Verified &amp; Active
+          </span>
+          <h1 className="mt-3 text-3xl font-extrabold text-gray-900">
+            Payment Successful!
           </h1>
-          <p className="mt-2 text-gray-500">
-            Your rental payment has been confirmed. The landlord has been
-            notified.
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-gray-600">
+            Your rental payment has been confirmed. Your tenancy is now active and the landlord has been notified.
           </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/dashboard/tenant"
-              className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
+              className="rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/25 transition-all hover:opacity-95"
             >
-              View my requests
+              Go to Tenant Portal →
             </Link>
             <Link
               href="/properties"
-              className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+              className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-100"
             >
-              Browse properties
+              Browse Properties
             </Link>
           </div>
         </>
       ) : (
         <>
-          <p className="text-5xl">😕</p>
-          <h1 className="mt-4 text-2xl font-bold text-gray-900">
-            Payment could not be confirmed
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-rose-50 text-3xl text-rose-600">
+            ⚠️
+          </div>
+          <h1 className="mt-5 text-2xl font-bold text-gray-900">
+            Payment Confirmation Failed
           </h1>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 max-w-sm text-sm text-gray-500">
             {message || "Something went wrong while confirming your payment."}
           </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/dashboard/tenant"
-              className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
+              className="rounded-xl bg-indigo-600 px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-indigo-500"
             >
-              View my requests
+              Return to Tenant Portal
             </Link>
             <Link
               href="/properties"
-              className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+              className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-100"
             >
-              Browse properties
+              Browse Properties
             </Link>
           </div>
         </>

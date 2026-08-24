@@ -10,24 +10,29 @@ const HeroSearch = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const value = query.trim();
-    router.push(value ? `/properties?search=${encodeURIComponent(value)}` : "/properties");
+    router.push(
+      value ? `/properties?search=${encodeURIComponent(value)}` : "/properties"
+    );
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto mt-8 flex max-w-xl items-center gap-2 rounded-full border border-gray-200 bg-white p-1.5 shadow-sm"
+      className="mx-auto mt-8 flex max-w-2xl items-center gap-2 rounded-2xl border border-white/20 bg-slate-900/75 p-2.5 shadow-2xl backdrop-blur-xl ring-1 ring-white/10 transition-all focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-400/40"
     >
-      <input
-        type="search"
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
-        placeholder="Search by location, area or keyword..."
-        className="w-full bg-transparent px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none"
-      />
+      <div className="flex flex-1 items-center gap-3 px-3">
+        <span className="text-xl">🔍</span>
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Search by area, location, or property title..."
+          className="w-full bg-transparent py-2 text-sm text-white placeholder:text-gray-300 focus:outline-none sm:text-base"
+        />
+      </div>
       <button
         type="submit"
-        className="shrink-0 rounded-full bg-indigo-600 px-5 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+        className="shrink-0 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/30 transition-all hover:opacity-95 hover:shadow-indigo-500/50"
       >
         Search
       </button>

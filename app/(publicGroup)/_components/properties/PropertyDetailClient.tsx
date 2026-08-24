@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getErrorMessage, useGetPropertyQuery } from "@/lib/api";
 import { formatRent, formatDate } from "@/lib/format";
+import { useAuthUser } from "@/lib/auth";
 import { PropertyDetailSkeleton } from "./Skeletons";
 import RequestRentModal from "./RequestRentModal";
 import WriteReviewModal from "./WriteReviewModal";
@@ -12,6 +13,7 @@ import WriteReviewModal from "./WriteReviewModal";
 const PropertyDetailClient = ({ id }: { id: string }) => {
   const { data: property, isLoading, isError, error, refetch } =
     useGetPropertyQuery(id);
+  const user = useAuthUser();
   const [selectedImage, setSelectedImage] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [writeReviewOpen, setWriteReviewOpen] = useState(false);
@@ -145,13 +147,21 @@ const PropertyDetailClient = ({ id }: { id: string }) => {
               <h2 className="text-lg font-semibold text-gray-900">
                 Reviews {reviewCount ? `(${reviewCount})` : ""}
               </h2>
-              {authed && (
-                <button
-                  onClick={() => setWriteReviewOpen(true)}
-                  className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition-colors hover:bg-indigo-100"
-                >
-                  ⭐ Write a Review
-                </button>
+              {user && (
+                property.reviews?.some(
+                  (r: any) => r.tenantId === user.id || r.tenant?.id === user.id
+                ) ? (
+                  <span className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+                    ✓ You reviewed this property
+                  </span>
+                ) : (
+                  <button
+                    onClick={() => setWriteReviewOpen(true)}
+                    className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition-colors hover:bg-indigo-100"
+                  >
+                    ⭐ Write a Review
+                  </button>
+                )
               )}
             </div>
 

@@ -146,12 +146,19 @@ export default function WriteReviewModal({
             </div>
 
             {status === "error" && message && (
-              <p
+              <div
                 role="alert"
-                className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700"
+                className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800"
               >
-                {message}
-              </p>
+                <p className="flex items-center gap-1.5 font-semibold">
+                  <span>⚠️</span> {message}
+                </p>
+                {message.toLowerCase().includes("already reviewed") && (
+                  <p className="mt-1 text-xs text-amber-700">
+                    You have already submitted feedback for this property. Only one review per property is allowed.
+                  </p>
+                )}
+              </div>
             )}
 
             <button
